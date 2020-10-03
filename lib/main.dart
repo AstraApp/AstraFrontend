@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 import 'package:astra_app/pages/launch.dart';
 
+// 10/3/20 1:15 PM Works
+
 
 List<CameraDescription> cameras;
 

@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ButtonTheme(
       shape: StadiumBorder(),
-      minWidth: 200,
+      minWidth: 150,
       height: 60,
       child: RaisedButton(
         color: color,
