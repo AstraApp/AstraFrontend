@@ -2,9 +2,11 @@
 
 Flutter based frontend for Astra.
 
-(We will add the images later)
-# Launch Page
-<img src="">
 
-# Home Page
-<img src="screenshot.png">
+# Screenshots
+<img src="screenshots/a.png">
+<img src="screenshots/b.png">
+<img src="screenshots/c.png">
+<img src="screenshots/d.png">
+<img src="screenshots/e.png">
+<img src="screenshots/f.png">
