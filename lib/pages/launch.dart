@@ -97,7 +97,7 @@ class _LaunchState extends State<Launch> {
                                 // For Video Purposes
                                 z = z * -1;
 
-                                final String baseUrl = "https://5d36db03952a.ngrok.io";
+                                final String baseUrl = "https://87e9c4906883.ngrok.io";
                                 final Dio dio = new Dio();
                                 var response;
 
@@ -130,7 +130,13 @@ class _LaunchState extends State<Launch> {
                                     barrierDismissible: true,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('Astra lives up to what it always wanted to be.\nThe pinnacle of the Cosmos.\nThe radiant beam to the eyes. '),
+                                        title: Container(padding: EdgeInsets.only(bottom: 10),child: Text('Astra lives up to what it always wanted to be.\nThe pinnacle of the Cosmos.\nThe radiant beam to the eyes. '),
+                                        decoration: BoxDecoration(border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.blue
+                                          )
+                                        )),
+                                        ),
                                         content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
