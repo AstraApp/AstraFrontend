@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
@@ -5,6 +7,9 @@ import 'package:astra_app/widgets/custom_button.dart';
 import 'package:astra_app/pages/home.dart';
 import 'package:location/location.dart';
 import 'package:sensors/sensors.dart';
+import 'package:astra_app/classes/satellite_info.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'dart:async';
 
 class Launch extends StatefulWidget {
@@ -21,7 +26,7 @@ class _LaunchState extends State<Launch> {
   final Location location = Location();
   List<double> _gyroscopeValues;
   List<StreamSubscription<dynamic>> _streamSubscriptions =
-  <StreamSubscription<dynamic>>[];
+      <StreamSubscription<dynamic>>[];
 
   @override
   void initState() {
@@ -49,12 +54,10 @@ class _LaunchState extends State<Launch> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final List<String> gyroscope =
-    _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-
+        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
 
     if (!controller.value.isInitialized) {
       return Container();
@@ -72,15 +75,19 @@ class _LaunchState extends State<Launch> {
             decoration: BoxDecoration(border: Border.all(color: Colors.black)),
           ),
         ),
-        Align(alignment: Alignment.center,
-        child:Material(
-          type: MaterialType.transparency,
-          child: Container(
-          padding: EdgeInsets.all(15),
-          color: Colors.white,
-          child: Text('Gyroscopic Data: ${gyroscope.toString()}', style: TextStyle(
-          fontSize: 12, color: Colors.black
-        ),), ), ),
+        Align(
+          alignment: Alignment.center,
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              padding: EdgeInsets.all(15),
+              color: Colors.white,
+              child: Text(
+                'Gyroscopic Data: ${gyroscope.toString()}',
+                style: TextStyle(fontSize: 12, color: Colors.black),
+              ),
+            ),
+          ),
         ),
         Align(
             alignment: Alignment.bottomCenter,
@@ -92,12 +99,37 @@ class _LaunchState extends State<Launch> {
                       text: 'Launch',
                       callback: () async {
                         LocationData _location = await location.getLocation();
-                        print('lat: ${_location.latitude}, long: ${_location.longitude}');
+                        print(
+                            'lat: ${_location.latitude}, long: ${_location.longitude}');
+                        int x = _location.latitude.toInt();
+                        int y = _location.longitude.toInt();
+                        int z;
+                        if (y.abs() < 180 && y.abs() > 90) {
+                          z = -1;
+                        } else {
+                          z = 1;
+                        }
+
+                        final String baseUrl = "https://60df6daab796.ngrok.io";
+                        final Dio dio = new Dio();
+                        var response;
+                        try{
+                          response = await dio.get("$baseUrl/?x=$x&y=$y&z=$z");
+                          print(response.data);
+                        } on DioError catch (e){
+                          print(e);
+                        }
+                        SatelliteInfo satelliteInfo = satelliteInfoFromJson(response.data.toString());
+
+
                         Navigator.pop(context);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Home(camera: widget.camera,)));
+                                builder: (BuildContext context) => Home(
+                                      camera: widget.camera,
+                                  satelliteInfo: satelliteInfo,
+                                    )));
                       },
                       color: Colors.white,
                     ))))

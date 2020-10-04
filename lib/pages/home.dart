@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:astra_app/pages/launch.dart';
+import 'package:astra_app/classes/satellite_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 List<CameraDescription> cameras;
 
 class Home extends StatefulWidget {
   final List<CameraDescription> camera;
+  final SatelliteInfo satelliteInfo;
 
-  const Home({Key key, this.camera}) : super(key: key);
+  const Home({Key key, this.camera, this.satelliteInfo}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -57,7 +60,7 @@ class _HomeState extends State<Home> {
                   child: Image(
                     fit: BoxFit.fill,
                     image: NetworkImage(
-                        'https://images.squarespace-cdn.com/content/v1/5b3bd5a9266c077a5bdfcafd/1579031116870-BD0UGULOLDUG0P182RDB/ke17ZwdGBToddI8pDm48kJanlAjKydPZDDRBEy8QTGN7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0hveExjbswnAj1UrRPScjfAi-WHBb3R4axoAEB7lfybbrcBqLQ3Qt4YGS4XJxXD2Ag/ELFIN-twin-probes-aurora.jpg'),
+                        widget.satelliteInfo.image),
                   ),
                 ),
               ),
@@ -67,12 +70,12 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'FIREBIRD-3',
+                        widget.satelliteInfo.name,
                         style:
                         TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Released xx/xx/xxxx',
+                        widget.satelliteInfo.resourceName,
                         style: TextStyle(
                             fontSize: 15,
                             color: Colors.blue,
@@ -84,13 +87,10 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('Description Here\naoeigjaoijf oaejifoaeij foaeij foawejfo aiefojaef aeiuf aoeufh iuaehf iahefiaiefh aiehfi aehif aiehf iauehfi auefauehfiuaefhia ehif ahef '),
+                      Text(widget.satelliteInfo.description),
                       Divider(thickness: 2,),
-                      Text('Velocity', style: TextStyle(
-                        fontSize: 22
-                      ),),
-                      Text('Version', style: TextStyle(
-                          fontSize: 22
+                      Text('The ${widget.satelliteInfo.name} is traveling above you at ${widget.satelliteInfo.velocity}!', style: TextStyle(
+                        fontSize: 13
                       ),),
                       // Row(
                       //   children: <Widget>[
