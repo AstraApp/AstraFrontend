@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:astra_app/pages/travel_astra.dart';
 import 'package:astra_app/widgets/camera_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,69 +40,100 @@ class _LaunchState extends State<Launch> {
 
   @override
   void dispose() {
-
     controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Stack(
+    return Scaffold(
+        body: Stack(
       alignment: Alignment.center,
       children: [
         CameraPreview(controller),
         CameraBorder(),
-        !loading ? Align(
-            alignment: Alignment.bottomCenter,
-            child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: new Container(
-                    padding: EdgeInsets.all(16),
-                    child: CustomButton(
-                      text: 'Launch',
-                      callback: () async {
-                        setState(() {
-                          loading = true;
-                        });
-                        LocationData _location = await location.getLocation();
-                        print(
-                            'lat: ${_location.latitude}, long: ${_location.longitude}');
-                        int x = _location.latitude.toInt();
-                        int y = _location.longitude.toInt();
-                        int z;
-                        if (y.abs() < 180 && y.abs() > 90) {
-                          z = -1;
-                        } else {
-                          z = 1;
-                        }
-                        // For Video Purposes
-                        z = z * -1;
+        !loading
+            ? Align(
+                alignment: Alignment.bottomLeft,
+                child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Container(
+                        padding: EdgeInsets.all(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                           IconButton(
+                                  icon: Icon(
+                                    Icons.airplanemode_active,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TravelAstra(camera: widget.camera,)));
+                                  }),
 
-                        final String baseUrl = "https://60df6daab796.ngrok.io";
-                        final Dio dio = new Dio();
-                        var response;
+                            CustomButton(
+                              text: 'Launch',
+                              callback: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                LocationData _location =
+                                    await location.getLocation();
+                                print(
+                                    'lat: ${_location.latitude}, long: ${_location.longitude}');
+                                int x = _location.latitude.toInt();
+                                int y = _location.longitude.toInt();
+                                int z;
+                                if (y.abs() < 180 && y.abs() > 90) {
+                                  z = -1;
+                                } else {
+                                  z = 1;
+                                }
+                                // For Video Purposes
+                                z = z * -1;
 
-                        try {
-                          response = await dio.get("$baseUrl/?x=$x&y=$y&z=$z");
-                          print(response.data);
-                        } on DioError catch (e){
-                          print(e);
-                        }
+                                final String baseUrl =
+                                    "https://5d36db03952a.ngrok.io";
+                                final Dio dio = new Dio();
+                                var response;
 
-                        SatelliteInfo satelliteInfo = satelliteInfoFromJson(response.data.toString());
-                        Navigator.pop(context);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => Home(
-                                      camera: widget.camera,
-                                  satelliteInfo: satelliteInfo,
-                                    )));
-                      },
-                      color: Colors.white,
-                    )))) : CircularProgressIndicator()
+                                try {
+                                  response =
+                                      await dio.get("$baseUrl/?x=$x&y=$y&z=$z");
+                                  print(response.data);
+                                } on DioError catch (e) {
+                                  print(e);
+                                }
+
+                                SatelliteInfo satelliteInfo =
+                                    satelliteInfoFromJson(
+                                        response.data.toString());
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) => Home(
+                                              camera: widget.camera,
+                                              satelliteInfo: satelliteInfo,
+                                            )));
+                              },
+                              color: Colors.white,
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.info,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {}),
+                          ],
+                        ))))
+            : CircularProgressIndicator()
       ],
-    );
+    ));
   }
 }
