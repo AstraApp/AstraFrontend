@@ -7,4 +7,4 @@ Flutter based frontend for Astra.
 <img src="">
 
 # Home Page
-<img src="">
+<img src="screenshot.png">
