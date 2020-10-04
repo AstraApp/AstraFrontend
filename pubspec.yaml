@@ -33,6 +33,8 @@ dependencies:
   dio:
   share:
   url_launcher:
+  webview_flutter:
+  flutter_webview_plugin:
 
 dev_dependencies:
   flutter_test:

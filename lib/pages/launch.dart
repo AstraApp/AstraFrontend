@@ -97,14 +97,13 @@ class _LaunchState extends State<Launch> {
                                 // For Video Purposes
                                 z = z * -1;
 
-                                final String baseUrl =
-                                    "https://5d36db03952a.ngrok.io";
+                                final String baseUrl = "https://5d36db03952a.ngrok.io";
                                 final Dio dio = new Dio();
                                 var response;
 
                                 try {
                                   response =
-                                      await dio.get("$baseUrl/?x=$x&y=$y&z=$z");
+                                  await dio.get("$baseUrl/?x=$x&y=$y&z=$z");
                                   print(response.data);
                                 } on DioError catch (e) {
                                   print(e);
@@ -125,11 +124,37 @@ class _LaunchState extends State<Launch> {
                               color: Colors.white,
                             ),
                             IconButton(
-                                icon: Icon(
-                                  Icons.info,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {}),
+                              icon: Icon(Icons.info, color: Colors.white,),
+                              onPressed: (){
+                                showDialog(context: context,
+                                    barrierDismissible: true,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Astra lives up to what it always wanted to be.\nThe pinnacle of the Cosmos.\nThe radiant beam to the eyes. '),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text("Our goal was to create an app that allows anyone to immediately gather information about numerous satellites orbiting our planet each day simply through their camera."),
+                                              Text('\nAll done in a click of a button.\n', style: TextStyle(
+                                                fontWeight: FontWeight.bold
+                                              ),),
+                                              Text("Our app not only lets you track satellites with just a camera but truly emphasizes the fact of human connection and interaction. With that being said, Astra offers a share feature to share satellite watch events a user will be attending with their friends and helps others connect from all around the world by allowing users to find out which satellites are present in another country. If that's not enough, Astra offers a full-scale 3D model of the earth along with thousands of satellites orbiting around it, with full details for each model. We started out with the lofty goal of data collection and ended with a true emphasis on connecting humans together with each other, from any part of the world. This is not just an app, it represents all of us. This is Astra."),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          IconButton(
+                                            icon: Icon(Icons.close),
+                                            onPressed: (){
+                                              Navigator.pop(context);
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    }
+                                );
+                              },
+                            ),
                           ],
                         ))))
             : CircularProgressIndicator()
