@@ -30,7 +30,6 @@ dependencies:
   camera:
   location:
   http:
-  sensors:
   dio:
   url_launcher:
 
@@ -64,6 +63,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
+
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Light.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

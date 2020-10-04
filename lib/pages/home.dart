@@ -18,6 +18,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  _launchURL (String name) async {
+    String url = 'https://hpde.io/SMWG/Observatory/$name';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,36 +98,11 @@ class _HomeState extends State<Home> {
                       ),
                       Text(widget.satelliteInfo.description),
                       Divider(thickness: 2,),
-                      Text('The ${widget.satelliteInfo.name} is traveling above you at ${widget.satelliteInfo.velocity}!', style: TextStyle(
-                        fontSize: 13
+                      Text('${widget.satelliteInfo.name} is traveling above you at ${widget.satelliteInfo.velocity}!', style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold
                       ),),
-                      // Row(
-                      //   children: <Widget>[
-                      //     // RatingStars(rating: 4.5),
-                      //     SizedBox(
-                      //       width: 5,
-                      //     ),
-                      //     Text(
-                      //       '23 Ratings',
-                      //       style: TextStyle(
-                      //           fontWeight: FontWeight.bold, fontSize: 15),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 15,
-                      //     ),
-                      //     Ink(
-                      //       decoration: BoxDecoration(
-                      //           color: Colors.lightBlueAccent,
-                      //           borderRadius: BorderRadius.all(Radius.circular(100))
-                      //       ),
-                      //       child:  IconButton(
-                      //         icon: Icon(Icons.add, color: Colors.black,),
-                      //         onPressed: (){},
-                      //       ),
-                      //     )
-                      //
-                      //   ],
-                      // ),
+                      Divider(thickness: 2,),
                       SizedBox(
                         height: 5,
                       ),
@@ -127,6 +111,7 @@ class _HomeState extends State<Home> {
                           InkWell(
                             borderRadius: BorderRadius.all(Radius.circular(25)),
                             onTap: () {
+                              _launchURL(widget.satelliteInfo.name);
                             },
                             child: Ink(
                               decoration: BoxDecoration(
