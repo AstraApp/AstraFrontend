@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:astra_app/pages/launch.dart';
 import 'package:astra_app/classes/satellite_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 List<CameraDescription> cameras;
 
@@ -78,10 +79,23 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        widget.satelliteInfo.name,
-                        style:
-                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            widget.satelliteInfo.name,
+                            style:
+                            TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(width: 10,),
+                          Container(child: IconButton(icon: Icon(Icons.share), onPressed: (){
+                            Share.share('I found ${widget.satelliteInfo.name} on Astra! Find out more about ${widget.satelliteInfo.name} at https://hpde.io/SMWG/Observatory/${widget.satelliteInfo.name}', subject: 'Satellite ${widget.satelliteInfo.name}.');
+                          },),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              border: Border.all(color: Colors.black)
+                            )
+                            ,)
+                          ],
                       ),
                       Text(
                         widget.satelliteInfo.resourceName,
@@ -141,7 +155,8 @@ class _HomeState extends State<Home> {
                         ],
                       )
                     ],
-                  ))
+                  )),
+
             ],
           ),
         ),

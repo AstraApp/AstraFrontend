@@ -31,6 +31,7 @@ dependencies:
   location:
   http:
   dio:
+  share:
   url_launcher:
 
 dev_dependencies:
